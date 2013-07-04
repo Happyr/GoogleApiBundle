@@ -39,9 +39,18 @@ class Configuration implements ConfigurationInterface
           //end rootnode children
           ->end();
 
+        $this->addServicesSection($rootNode);
+
         return $treeBuilder;
     }
 
+
+    /**
+     * Add the service section
+     *
+     * @param ArrayNodeDefinition $rootNode
+     *
+     */
     private function addServicesSection(ArrayNodeDefinition $rootNode)
     {
         $rootNode->children()
