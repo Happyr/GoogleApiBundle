@@ -8,7 +8,6 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 /**
  * This is the class that validates and merges configuration from your app/config files
  *
- * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html#cookbook-bundles-extension-config-class}
  */
 class Configuration implements ConfigurationInterface
 {
@@ -33,11 +32,17 @@ class Configuration implements ConfigurationInterface
             ->scalarNode('ioClass')->defaultValue('Google_CurlIO')->cannotBeEmpty()->end()
             ->scalarNode('cacheClass')->defaultValue('Google_FileCache')->cannotBeEmpty()->end()
             ->scalarNode('basePath')->defaultValue('https://www.googleapis.com')->cannotBeEmpty()->end()
-            ->scalarNode('ioFileCache_directory')->defaultValue(sys_get_temp_dir().'Google_Client')->cannotBeEmpty()->end()
+            ->scalarNode('ioFileCache_directory')
+                ->defaultValue(sys_get_temp_dir().'Google_Client')
+                ->cannotBeEmpty()
+            ->end()
 
              ->arrayNode('services')->addDefaultsIfNotSet()->children()
                  ->arrayNode('analytics')->addDefaultsIfNotSet()->children()
-                    ->scalarNode('scope')->defaultValue('https://www.googleapis.com/auth/analytics.readonly')->cannotBeEmpty()->end()
+                    ->scalarNode('scope')
+                        ->defaultValue('https://www.googleapis.com/auth/analytics.readonly')
+                        ->cannotBeEmpty()
+                    ->end()
                  ->end()->end()//end
 
                  ->arrayNode('calendar')->addDefaultsIfNotSet()->children()
@@ -53,7 +58,10 @@ class Configuration implements ConfigurationInterface
                  ->end()->end()//end
 
                  ->arrayNode('books')->addDefaultsIfNotSet()->children()
-                    ->scalarNode('scope')->defaultValue('https://www.googleapis.com/auth/books')->cannotBeEmpty()->end()
+                    ->scalarNode('scope')
+                        ->defaultValue('https://www.googleapis.com/auth/books')
+                        ->cannotBeEmpty()
+                    ->end()
                  ->end()->end()//end
 
                  ->arrayNode('latitude')->addDefaultsIfNotSet()->children()
@@ -69,7 +77,10 @@ class Configuration implements ConfigurationInterface
                  ->end()->end()//end
 
                  ->arrayNode('moderator')->addDefaultsIfNotSet()->children()
-                    ->scalarNode('scope')->defaultValue('https://www.googleapis.com/auth/moderator')->cannotBeEmpty()->end()
+                    ->scalarNode('scope')
+                        ->defaultValue('https://www.googleapis.com/auth/moderator')
+                        ->cannotBeEmpty()
+                    ->end()
                  ->end()->end()//end
 
                  ->arrayNode('oauth2')->addDefaultsIfNotSet()->children()
@@ -85,19 +96,31 @@ class Configuration implements ConfigurationInterface
                  ->end()->end()//end
 
                  ->arrayNode('plus')->addDefaultsIfNotSet()->children()
-                    ->scalarNode('scope')->defaultValue('https://www.googleapis.com/auth/plus.me')->cannotBeEmpty()->end()
+                    ->scalarNode('scope')
+                        ->defaultValue('https://www.googleapis.com/auth/plus.me')
+                        ->cannotBeEmpty()
+                    ->end()
                  ->end()->end()//end
 
                  ->arrayNode('siteVerification')->addDefaultsIfNotSet()->children()
-                    ->scalarNode('scope')->defaultValue('https://www.googleapis.com/auth/siteverification')->cannotBeEmpty()->end()
+                    ->scalarNode('scope')
+                        ->defaultValue('https://www.googleapis.com/auth/siteverification')
+                        ->cannotBeEmpty()
+                    ->end()
                  ->end()->end()//end
 
                  ->arrayNode('tasks')->addDefaultsIfNotSet()->children()
-                    ->scalarNode('scope')->defaultValue('https://www.googleapis.com/auth/tasks')->cannotBeEmpty()->end()
+                    ->scalarNode('scope')
+                        ->defaultValue('https://www.googleapis.com/auth/tasks')
+                        ->cannotBeEmpty()
+                    ->end()
                  ->end()->end()//end
 
                  ->arrayNode('urlshortener')->addDefaultsIfNotSet()->children()
-                    ->scalarNode('scope')->defaultValue('https://www.googleapis.com/auth/urlshortener')->cannotBeEmpty()->end()
+                    ->scalarNode('scope')
+                        ->defaultValue('https://www.googleapis.com/auth/urlshortener')
+                        ->cannotBeEmpty()
+                    ->end()
                  ->end()->end()//end
 
              ->end()->end()//end services

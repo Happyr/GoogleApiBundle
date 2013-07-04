@@ -23,7 +23,7 @@ class PlacesAutocompleteService
      * Autocomplete the location
      *
      *
-     * @param $location
+     * @param string $location
      *
      * @return string the response of a request to google
      */
@@ -34,9 +34,9 @@ class PlacesAutocompleteService
 
         $response=json_decode($response);
 
-        if($response->status!='OK')
-
+        if($response->status!='OK'){
             return $location;
+        }
 
         return $response->predictions[0]->description;
 
