@@ -29,18 +29,16 @@ class Configuration implements ConfigurationInterface
             ->scalarNode('developer_key')->isRequired()->cannotBeEmpty()->end()
             ->scalarNode('site_name')->isRequired()->cannotBeEmpty()->end()
 
-            ->scalarNode('authClass')->defaultValue('Google_OAuth2')->cannotBeEmpty()->end()
-            ->scalarNode('ioClass')->defaultValue('Google_CurlIO')->cannotBeEmpty()->end()
-            ->scalarNode('cacheClass')->defaultValue('Google_FileCache')->cannotBeEmpty()->end()
-            ->scalarNode('basePath')->defaultValue('https://www.googleapis.com')->cannotBeEmpty()->end()
-            ->scalarNode('ioFileCache_directory')
-                ->defaultValue(sys_get_temp_dir().'Google_Client')
-                ->cannotBeEmpty()
-            ->end()
+            ->scalarNode('authClass')->end()
+            ->scalarNode('ioClass')->end()
+            ->scalarNode('cacheClass')->end()
+            ->scalarNode('basePath')->end()
+            ->scalarNode('ioFileCache_directory')->end()
           //end rootnode children
           ->end();
 
-        $this->addServicesSection($rootNode);
+        //let use the api defaults
+        //$this->addServicesSection($rootNode);
 
         return $treeBuilder;
     }
