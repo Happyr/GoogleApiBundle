@@ -9,8 +9,8 @@ use GoogleApi\Contrib\apiAnalyticsService;
  *
  * This is the class that communicats with analytics api
  */
-class AnalyticsService extends apiAnalyticsService{
-
+class AnalyticsService extends apiAnalyticsService
+{
     /**
      * @var GoogleClient client
      *
@@ -22,11 +22,10 @@ class AnalyticsService extends apiAnalyticsService{
      * Constructor
      * @param GoogleClient $client
      */
-    public function __construct(GoogleClient $client){
+    public function __construct(GoogleClient $client)
+    {
         $this->client=$client;
         parent::__construct($client->getGoogleClient());
     }
 
-
 }
-    

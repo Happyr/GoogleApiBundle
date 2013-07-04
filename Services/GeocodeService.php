@@ -7,7 +7,8 @@ namespace HappyR\Google\ApiBundle\Services;
  *
  * This service geocodes an address to coords and back
  */
-class GeocodeService{
+class GeocodeService
+{
     protected $baseUrl='http://maps.googleapis.com/maps/api/geocode/json?sensor=false&address=';
 
     /**
@@ -15,41 +16,43 @@ class GeocodeService{
      *
      * Returns the response of a request to google
      */
-    public function geocodeAddress($text, $raw=false){
+    public function geocodeAddress($text, $raw=false)
+    {
         $response=@file_get_contents($this->baseUrl.urlencode($text));
 
         $response=json_decode($response);
 
         if($response->status!='OK')
+
             return null;
 
         if($raw)
+
             return $response->results;
 
         return $response->results[0]->geometry->location;
 
     }
 
-
     /**
      * Returns address from a coordinates
      */
-    public function reverseGeocodeAddress($lat,$lang,$raw=false){
+    public function reverseGeocodeAddress($lat,$lang,$raw=false)
+    {
         $response=@file_get_contents($this->baseUrl.urlencode('latlng='.$lat.','.$lang));
 
         $response=json_decode($response);
 
         if($response->status!='OK')
+
             return null;
 
         if($raw)
+
             return $response->results;
 
         return $response->results[0]->formatted_address;
 
-
     }
 
-
 }
-    

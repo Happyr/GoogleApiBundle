@@ -11,7 +11,6 @@ class PlacesAutocompleteService
 {
     protected $baseUrl='https://maps.googleapis.com/maps/api/place/autocomplete/json?sensor=false';
 
-
     /**
      * @param array $config
      */
@@ -36,10 +35,10 @@ class PlacesAutocompleteService
         $response=json_decode($response);
 
         if($response->status!='OK')
+
             return $location;
 
         return $response->predictions[0]->description;
 
     }
 }
-    

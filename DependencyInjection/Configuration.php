@@ -32,14 +32,14 @@ class Configuration implements ConfigurationInterface
             ->scalarNode('authClass')->defaultValue('Google_OAuth2')->cannotBeEmpty()->end()
             ->scalarNode('ioClass')->defaultValue('Google_CurlIO')->cannotBeEmpty()->end()
             ->scalarNode('cacheClass')->defaultValue('Google_FileCache')->cannotBeEmpty()->end()
-            ->scalarNode('basePath')->defaultValue('https://www.googleapis.com')->cannotBeEmpty()->end()                        
+            ->scalarNode('basePath')->defaultValue('https://www.googleapis.com')->cannotBeEmpty()->end()
             ->scalarNode('ioFileCache_directory')->defaultValue(sys_get_temp_dir().'Google_Client')->cannotBeEmpty()->end()
 
              ->arrayNode('services')->addDefaultsIfNotSet()->children()
                  ->arrayNode('analytics')->addDefaultsIfNotSet()->children()
                     ->scalarNode('scope')->defaultValue('https://www.googleapis.com/auth/analytics.readonly')->cannotBeEmpty()->end()
                  ->end()->end()//end
-                 
+
                  ->arrayNode('calendar')->addDefaultsIfNotSet()->children()
                     ->arrayNode('scope')
                         ->prototype('scalar')->end()
@@ -51,11 +51,11 @@ class Configuration implements ConfigurationInterface
                         ->cannotBeEmpty()
                     ->end()
                  ->end()->end()//end
-                 
+
                  ->arrayNode('books')->addDefaultsIfNotSet()->children()
                     ->scalarNode('scope')->defaultValue('https://www.googleapis.com/auth/books')->cannotBeEmpty()->end()
                  ->end()->end()//end
-                   
+
                  ->arrayNode('latitude')->addDefaultsIfNotSet()->children()
                     ->arrayNode('scope')
                         ->prototype('scalar')->end()
@@ -67,12 +67,11 @@ class Configuration implements ConfigurationInterface
                         ->cannotBeEmpty()
                     ->end()
                  ->end()->end()//end
-                 
-                 
+
                  ->arrayNode('moderator')->addDefaultsIfNotSet()->children()
                     ->scalarNode('scope')->defaultValue('https://www.googleapis.com/auth/moderator')->cannotBeEmpty()->end()
                  ->end()->end()//end
-                   
+
                  ->arrayNode('oauth2')->addDefaultsIfNotSet()->children()
                     ->arrayNode('scope')
                         ->prototype('scalar')->end()
@@ -84,25 +83,25 @@ class Configuration implements ConfigurationInterface
                         ->cannotBeEmpty()
                     ->end()
                  ->end()->end()//end
-                 
+
                  ->arrayNode('plus')->addDefaultsIfNotSet()->children()
                     ->scalarNode('scope')->defaultValue('https://www.googleapis.com/auth/plus.me')->cannotBeEmpty()->end()
-                 ->end()->end()//end  
-                 
+                 ->end()->end()//end
+
                  ->arrayNode('siteVerification')->addDefaultsIfNotSet()->children()
                     ->scalarNode('scope')->defaultValue('https://www.googleapis.com/auth/siteverification')->cannotBeEmpty()->end()
-                 ->end()->end()//end  
-                 
+                 ->end()->end()//end
+
                  ->arrayNode('tasks')->addDefaultsIfNotSet()->children()
                     ->scalarNode('scope')->defaultValue('https://www.googleapis.com/auth/tasks')->cannotBeEmpty()->end()
-                 ->end()->end()//end  
-                 
+                 ->end()->end()//end
+
                  ->arrayNode('urlshortener')->addDefaultsIfNotSet()->children()
                     ->scalarNode('scope')->defaultValue('https://www.googleapis.com/auth/urlshortener')->cannotBeEmpty()->end()
-                 ->end()->end()//end  
-                   
+                 ->end()->end()//end
+
              ->end()->end()//end services
-             
+
         ->end();
 
         return $treeBuilder;
