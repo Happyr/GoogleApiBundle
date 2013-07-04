@@ -36,14 +36,22 @@ class Configuration implements ConfigurationInterface
                 ->defaultValue(sys_get_temp_dir().'Google_Client')
                 ->cannotBeEmpty()
             ->end()
+          //end rootnode children
+          ->end();
 
-             ->arrayNode('services')->addDefaultsIfNotSet()->children()
+        return $treeBuilder;
+    }
+
+    private function addServicesSection(ArrayNodeDefinition $rootNode)
+    {
+        $rootNode->children()
+           ->arrayNode('services')->addDefaultsIfNotSet()->children()
                  ->arrayNode('analytics')->addDefaultsIfNotSet()->children()
                     ->scalarNode('scope')
                         ->defaultValue('https://www.googleapis.com/auth/analytics.readonly')
                         ->cannotBeEmpty()
                     ->end()
-                 ->end()->end()//end
+                 ->end()->end()
 
                  ->arrayNode('calendar')->addDefaultsIfNotSet()->children()
                     ->arrayNode('scope')
@@ -55,14 +63,14 @@ class Configuration implements ConfigurationInterface
                               ))
                         ->cannotBeEmpty()
                     ->end()
-                 ->end()->end()//end
+                 ->end()->end()
 
                  ->arrayNode('books')->addDefaultsIfNotSet()->children()
                     ->scalarNode('scope')
                         ->defaultValue('https://www.googleapis.com/auth/books')
                         ->cannotBeEmpty()
                     ->end()
-                 ->end()->end()//end
+                 ->end()->end()
 
                  ->arrayNode('latitude')->addDefaultsIfNotSet()->children()
                     ->arrayNode('scope')
@@ -74,14 +82,14 @@ class Configuration implements ConfigurationInterface
                               ))
                         ->cannotBeEmpty()
                     ->end()
-                 ->end()->end()//end
+                 ->end()->end()
 
                  ->arrayNode('moderator')->addDefaultsIfNotSet()->children()
                     ->scalarNode('scope')
                         ->defaultValue('https://www.googleapis.com/auth/moderator')
                         ->cannotBeEmpty()
                     ->end()
-                 ->end()->end()//end
+                 ->end()->end()
 
                  ->arrayNode('oauth2')->addDefaultsIfNotSet()->children()
                     ->arrayNode('scope')
@@ -93,40 +101,39 @@ class Configuration implements ConfigurationInterface
                               ))
                         ->cannotBeEmpty()
                     ->end()
-                 ->end()->end()//end
+                 ->end()->end()
 
                  ->arrayNode('plus')->addDefaultsIfNotSet()->children()
                     ->scalarNode('scope')
                         ->defaultValue('https://www.googleapis.com/auth/plus.me')
                         ->cannotBeEmpty()
                     ->end()
-                 ->end()->end()//end
+                 ->end()->end()
 
                  ->arrayNode('siteVerification')->addDefaultsIfNotSet()->children()
                     ->scalarNode('scope')
                         ->defaultValue('https://www.googleapis.com/auth/siteverification')
                         ->cannotBeEmpty()
                     ->end()
-                 ->end()->end()//end
+                 ->end()->end()
 
                  ->arrayNode('tasks')->addDefaultsIfNotSet()->children()
                     ->scalarNode('scope')
                         ->defaultValue('https://www.googleapis.com/auth/tasks')
                         ->cannotBeEmpty()
                     ->end()
-                 ->end()->end()//end
+                 ->end()->end()
 
                  ->arrayNode('urlshortener')->addDefaultsIfNotSet()->children()
                     ->scalarNode('scope')
                         ->defaultValue('https://www.googleapis.com/auth/urlshortener')
                         ->cannotBeEmpty()
                     ->end()
-                 ->end()->end()//end
+                 ->end()->end()
 
-             ->end()->end()//end services
+            //end services
+            ->end()->end()
 
-        ->end();
-
-        return $treeBuilder;
+        ;
     }
 }
