@@ -3,7 +3,7 @@
     "type": "symfony-bundle",
     "description": "A Symfony2 Wrapper for the Google APIs Client Library for PHP",
     "keywords": ["Google API"],
-    "homepage": "http://developer.happyr.se",
+    "homepage": "http://developer.happyr.se/symfony2-bundles/google-api-bundle",
     "license": "MIT",
     "authors": [
         {
