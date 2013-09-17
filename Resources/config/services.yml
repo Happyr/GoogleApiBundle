@@ -1,7 +1,5 @@
 parameters:
 
-
-
 services:
   happyr.google.api.client:
       class: HappyR\Google\ApiBundle\Services\GoogleClient
@@ -10,11 +8,3 @@ services:
   happyr.google.api.analytics:
     class: HappyR\Google\ApiBundle\Services\AnalyticsService
     arguments: [@happyr.google.api.client]
-
-  happyr.google.api.geocode:
-    class: HappyR\Google\ApiBundle\Services\GeocodeService
-    arguments: []
-
-  happyr.google.api.places.autocomplete:
-    class: HappyR\Google\ApiBundle\Services\PlacesAutocompleteService
-    arguments: [%happy_r_google_api%]
