@@ -2,14 +2,12 @@
 
 namespace HappyR\Google\ApiBundle\Services;
 
-use GoogleApi\Contrib\AnalyticsService as baseAnalyticsService;
-
 /**
  * Class AnalyticsService
  *
  * This is the class that communicates with analytics api
  */
-class AnalyticsService extends baseAnalyticsService
+class AnalyticsService extends \Google_Service_Analytics
 {
     /**
      * @var GoogleClient client

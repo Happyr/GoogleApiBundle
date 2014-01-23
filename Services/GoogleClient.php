@@ -28,7 +28,7 @@ class GoogleClient
         // False if associative arrays should be returned (default behavior).
         $config['use_objects'] = true;
 
-        $client = new Client($config);
+        $client = new \Google_Client($config);
 
         $client -> setApplicationName($config['application_name']);
         $client -> setClientId($config['oauth2_client_id']);
