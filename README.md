@@ -28,6 +28,7 @@ Install it with Composer!
     require: {
         // ...
         "happyr/google-api-bundle": "dev-master",
+        "google/apiclient": "@beta",
     }
 }
 ```
