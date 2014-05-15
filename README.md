@@ -9,7 +9,7 @@ What is HappyR?
 ---------------
 The HappyR namespace is developed by [HappyRecruiting][1]. We put some of our bundles here because we love to share.
 Since we use a lot of open source libraries and bundles in our application it feels natural to give back something.
-You will find all our Symfony2 bundles that we've created for the open source world at [developer.happyr.se][2]. You
+You will find all our Symfony2 bundles that we've created for the open source world at [developer.happyr.com][2]. You
 will also find more documentation about each bundle and our API clients, WordPress plugins and more.
 
 
@@ -72,5 +72,5 @@ happy_r_google_api:
 
 
 [1]: http://happyrecruiting.se
-[2]: http://developer.happyr.se
-[3]: http://developer.happyr.se/symfony2-bundles/google-api-bundle
+[2]: http://developer.happyr.com
+[3]: http://developer.happyr.com/symfony2-bundles/google-api-bundle
