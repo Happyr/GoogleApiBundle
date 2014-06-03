@@ -42,8 +42,6 @@ class GoogleClient
 
     /**
      *
-     *
-     *
      * @return Client
      */
     public function getGoogleClient()
@@ -52,7 +50,6 @@ class GoogleClient
     }
 
     /**
-     *
      *
      * @param string $accessToken
      *
@@ -64,13 +61,12 @@ class GoogleClient
 
     /**
      *
-     *
      * @param string|null $code
      *
      */
     public function authenticate($code = null)
     {
-        $this -> client -> authenticate($code);
+        $this->client->authenticate($code);
     }
 
     /**
@@ -79,7 +75,7 @@ class GoogleClient
      */
     public function createAuthUrl()
     {
-        return $this -> client -> createAuthUrl();
+        return $this->client->createAuthUrl();
     }
 
     /**
@@ -90,7 +86,7 @@ class GoogleClient
      */
     public function getAccessToken()
     {
-        return $this -> client -> getAccessToken();
+        return $this->client->getAccessToken();
     }
 
     /**
@@ -99,7 +95,6 @@ class GoogleClient
      */
     public function isAccessTokenExpired()
     {
-        return $this -> client -> isAccessTokenExpired();
+        return $this->client->isAccessTokenExpired();
     }
-
 }

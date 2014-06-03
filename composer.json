@@ -17,9 +17,6 @@
         "symfony/yaml": "2.*",
         "google/apiclient": "v1.0.1-beta"
     },
-    "require-dev": {
-        "mockery/mockery": "*"
-    },
     "autoload": {
         "psr-0": { "HappyR\\Google\\ApiBundle": "" }
     },
