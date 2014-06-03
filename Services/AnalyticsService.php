@@ -25,5 +25,4 @@ class AnalyticsService extends \Google_Service_Analytics
         $this->client=$client;
         parent::__construct($client->getGoogleClient());
     }
-
 }

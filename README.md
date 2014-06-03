@@ -1,16 +1,8 @@
-GoogleAPIBundle
-===============
+Google API Bundle
+=================
 
-A symfony2 bundle to communicate to Google API. This bundle implements the services I've previously used. If your service is
-not implemented, please do a PR or write me a nice email and we will fix it together. 
-
-
-What is HappyR?
----------------
-The HappyR namespace is developed by [HappyRecruiting][1]. We put some of our bundles here because we love to share.
-Since we use a lot of open source libraries and bundles in our application it feels natural to give back something.
-You will find all our Symfony2 bundles that we've created for the open source world at [developer.happyr.com][2]. You
-will also find more documentation about each bundle and our API clients, WordPress plugins and more.
+A symfony2 bundle to communicate to Google API. This bundle is a Symfony2 wrapper for the [google apiclient][1].
+There are some services not yet implemented. Please submit a PR and I'm happy to merge.
 
 
 
@@ -70,7 +62,4 @@ happy_r_google_api:
 ```
 
 
-
-[1]: http://happyrecruiting.se
-[2]: http://developer.happyr.com
-[3]: http://developer.happyr.com/symfony2-bundles/google-api-bundle
+[1]: https://github.com/google/google-api-php-client
