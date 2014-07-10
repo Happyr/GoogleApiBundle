@@ -3,12 +3,12 @@
     "type": "symfony-bundle",
     "description": "A Symfony2 Wrapper for the Google APIs Client Library for PHP",
     "keywords": ["Google API"],
-    "homepage": "http://developer.happyr.se/symfony2-bundles/google-api-bundle",
+    "homepage": "http://developer.happyr.com/symfony2-bundles/google-api-bundle",
     "license": "MIT",
     "authors": [
         {
             "name": "Tobias Nyholm",
-            "email": "tobias@happyrecruiting.se"
+            "email": "tobias@happyr.com"
         }
     ],
     "require": {
