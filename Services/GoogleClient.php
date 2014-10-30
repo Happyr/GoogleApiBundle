@@ -2,8 +2,6 @@
 
 namespace HappyR\Google\ApiBundle\Services;
 
-use GoogleApi\Client;
-
 /**
  * Class GoogleClient
  *
@@ -12,14 +10,11 @@ use GoogleApi\Client;
 class GoogleClient
 {
     /**
-     * @var \GoogleApi\Client client
-     *
-     *
+     * @var \Google_Client client
      */
     protected $client;
 
     /**
-     *
      * @param array $config
      */
     public function __construct(array $config)
@@ -37,12 +32,10 @@ class GoogleClient
         $client -> setDeveloperKey($config['developer_key']);
 
         $this -> client = $client;
-
     }
 
     /**
-     *
-     * @return Client
+     * @return \Google_Client
      */
     public function getGoogleClient()
     {
@@ -50,9 +43,7 @@ class GoogleClient
     }
 
     /**
-     *
      * @param string $accessToken
-     *
      */
     public function setAccessToken($accessToken)
     {
@@ -60,9 +51,7 @@ class GoogleClient
     }
 
     /**
-     *
      * @param string|null $code
-     *
      */
     public function authenticate($code = null)
     {

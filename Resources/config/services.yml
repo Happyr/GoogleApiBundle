@@ -1,10 +1,12 @@
-parameters:
-
 services:
-  happyr.google.api.client:
-      class: HappyR\Google\ApiBundle\Services\GoogleClient
-      arguments: [%happy_r_google_api%]
+    happyr.google.api.client:
+        class: HappyR\Google\ApiBundle\Services\GoogleClient
+        arguments: [%happy_r_google_api%]
 
-  happyr.google.api.analytics:
-    class: HappyR\Google\ApiBundle\Services\AnalyticsService
-    arguments: [@happyr.google.api.client]
+    happyr.google.api.analytics:
+        class: HappyR\Google\ApiBundle\Services\AnalyticsService
+        arguments: [@happyr.google.api.client]
+    
+    happyr.google.api.youtube:
+        class: HappyR\Google\ApiBundle\Services\YoutubeService
+        arguments: [@happyr.google.api.client]
