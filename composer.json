@@ -23,6 +23,10 @@
     "autoload": {
         "psr-0": { "HappyR\\Google\\ApiBundle": "" }
     },
-    "target-dir": "HappyR/Google/ApiBundle"
-    
+    "target-dir": "HappyR/Google/ApiBundle",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.1.x-dev"
+        }
+    }    
 }
