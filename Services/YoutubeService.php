@@ -45,16 +45,16 @@ class YoutubeService extends \Google_Service_YouTube
             throw new \RuntimeException(sprintf('Could not find video with id %s', $videoId));
         }
 
-        return $listResponse['items'][0]['status'];
+        return $listResponse['modelData']['items'][0]['status'];
     }
 
     /**
      * Get thumbnails of a video
      * You can specify a format. If so, you get a single thumbnail of specified format,
-     * otherwise you get an array with all three available formats
+     * otherwise you get an array with all five available formats
      *
      * @param  string $videoId
-     * @param  string $format  "default", "medium", "high", or null
+     * @param  string $format  "default", "medium", "high", "standard", "maxres" or null
      * @return array
      */
     public function getThumbnails($videoId, $format = null)
@@ -63,16 +63,16 @@ class YoutubeService extends \Google_Service_YouTube
         if (empty($listResponse)) {
             throw new \RuntimeException(sprintf('Could not find video with id %s', $videoId));
         }
-        $video = $listResponse[0];
+        $video = $listResponse['modelData']['items'][0];
         $videoSnippet = $video['snippet'];
         if (is_null($format)) {
-            return $videoSnippet['thumbnails']['data'];
+            return $videoSnippet['thumbnails'];
         }
-        if (!in_array($format, array('default', 'medium', 'high'))) {
+        if (!in_array($format, array('default', 'medium', 'high', 'standard', 'maxres'))) {
             throw new \InvalidArgumentException(sprintf('Invalid format "%s"', $format));
         }
 
-        return $videoSnippet['thumbnails']['data'][$format];
+        return $videoSnippet['thumbnails'][$format];
     }
 
     /**
