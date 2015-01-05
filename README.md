@@ -11,25 +11,10 @@ Installation
 
 ### Step 1: Using Composer
 
-Install it with Composer!
+Simply run assuming you have installed composer.phar or composer binary:
 
-```js
-// composer.json
-{
-    // ...
-    require: {
-        // ...
-        "happyr/google-api-bundle": "dev-master",
-        "google/apiclient": "@beta",
-    }
-}
-```
-
-Then, you can install the new dependencies by running Composer's ``update``
-command from the directory where your ``composer.json`` file is located:
-
-```bash
-$ php composer.phar update
+``` bash
+$ composer require happyr/google-api-bundle:dev-master
 ```
 
 ### Step 2: Register the bundle
