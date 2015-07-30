@@ -160,7 +160,7 @@ class Configuration implements ConfigurationInterface
                 })
             ->end()
             ->children()
-                ->scalarNode('default_account')->end()
+                ->scalarNode('default_account')->cannotBeEmpty()->defaultValue('default')->end()
             ->end()
             ->fixXmlConfig('account')
             ->children()
@@ -169,13 +169,42 @@ class Configuration implements ConfigurationInterface
                     ->requiresAtLeastOneElement()
                     ->useAttributeAsKey('name')
                     ->prototype('array')
+                        ->validate()
+                            ->always(
+                                function ($v) {
+                                    $required = array();
+
+                                    switch ($v['type']) {
+                                        case 'web':
+                                            $required = array('oauth2_client_secret', 'oauth2_redirect_uri', 'developer_key', 'site_name');
+                                            break;
+
+                                        case 'service':
+                                            $required = array('oauth2_client_email', 'oauth2_private_key', 'oauth2_scopes');
+                                            break;
+                                    }
+
+                                    foreach ($required as $key) {
+                                        if (!isset($v[$key]) || empty($v[$key])) {
+                                            throw new \InvalidArgumentException(sprintf('"%s" is not set or empty', $key));
+                                        }
+                                    }
+
+                                    return $v;
+                                }
+                            )
+                        ->end()
                         ->children()
+                            ->enumNode('type')->values(array('web', 'service'))->cannotBeEmpty()->defaultValue('web')->end()
                             ->scalarNode('application_name')->isRequired()->cannotBeEmpty()->end()
                             ->scalarNode('oauth2_client_id')->isRequired()->cannotBeEmpty()->end()
-                            ->scalarNode('oauth2_client_secret')->isRequired()->cannotBeEmpty()->end()
-                            ->scalarNode('oauth2_redirect_uri')->isRequired()->cannotBeEmpty()->end()
-                            ->scalarNode('developer_key')->isRequired()->cannotBeEmpty()->end()
-                            ->scalarNode('site_name')->isRequired()->cannotBeEmpty()->end()
+                            ->scalarNode('oauth2_client_secret')->end()
+                            ->scalarNode('oauth2_client_email')->end()
+                            ->scalarNode('oauth2_private_key')->end()
+                            ->scalarNode('oauth2_redirect_uri')->end()
+                            ->variableNode('oauth2_scopes')->end()
+                            ->scalarNode('developer_key')->end()
+                            ->scalarNode('site_name')->end()
 
                             ->scalarNode('authClass')->end()
                             ->scalarNode('ioClass')->end()
