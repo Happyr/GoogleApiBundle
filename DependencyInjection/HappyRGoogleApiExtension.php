@@ -3,15 +3,12 @@
 namespace HappyR\Google\ApiBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
 use Symfony\Component\DependencyInjection\Loader;
 
-/**
- * This is the class that loads and manages your bundle configuration
- *
- * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
- */
 class HappyRGoogleApiExtension extends ConfigurableExtension
 {
     /**
@@ -19,9 +16,59 @@ class HappyRGoogleApiExtension extends ConfigurableExtension
      */
     public function loadInternal(array $config, ContainerBuilder $container)
     {
-        $container->setParameter('happy_r_google_api', $config);
+        foreach ($config['accounts'] as $name => $account) {
+            $this->loadAccount($name, $account, $container);
+        }
 
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('services.yml');
+        // Backwards compatibility
+        $default = $config['default_account'];
+        $container->setParameter('happy_r_google_api', array_merge($config['accounts'][$default], $config));
+        $container->setAlias('happyr.google.api.client', sprintf('happyr.google.api.%s_client', $default));
+        $container->setAlias('happyr.google.api.analytics', sprintf('happyr.google.api.%s_analytics', $default));
+        $container->setAlias('happyr.google.api.youtube', sprintf('happyr.google.api.%s_youtube', $default));
+    }
+
+    /**
+     * Define services for each account configuration.
+     *
+     * @param string           $name      The account name
+     * @param array            $config    The account configuration
+     * @param ContainerBuilder $container The container builder
+     */
+    public function loadAccount($name, array $config, ContainerBuilder $container)
+    {
+        $clientId = sprintf('happyr.google.api.%s_client', $name);
+        $client   = new Definition(
+            'HappyR\Google\ApiBundle\Services\GoogleClient',
+            array($config, new Reference('logger', ContainerInterface::IGNORE_ON_INVALID_REFERENCE))
+        );
+
+        $client->addTag('monolog.logger', array('channel' => 'google_client'));
+
+        $container->setDefinition($clientId, $client);
+
+        $container->setDefinition(
+            sprintf('happyr.google.api.%s_analytics', $name),
+            new Definition(
+                'HappyR\Google\ApiBundle\Services\AnalyticsService',
+                array(new Reference($clientId))
+            )
+        );
+
+        $container->setDefinition(
+            sprintf('happyr.google.api.%s_youtube', $name),
+            new Definition(
+                'HappyR\Google\ApiBundle\Services\YoutubeService',
+                array(new Reference($clientId))
+            )
+        );
+
+        $container->setDefinition(
+            sprintf('happyr.google.api.%s_groups_migration', $name),
+            new Definition(
+                'HappyR\Google\ApiBundle\Services\GroupsMigrationService',
+                array(new Reference($clientId))
+            )
+        );
     }
 }
