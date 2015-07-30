@@ -52,12 +52,14 @@ $bundles = array(
 # app/config/config.yml
 # you will get these parameters form https://code.google.com/apis/console/"
 happy_r_google_api:
-  application_name: MySite
-  oauth2_client_id: 
-  oauth2_client_secret: 
-  oauth2_redirect_uri: 
-  developer_key: 
-  site_name: mysite.com
+  accounts:
+    default:
+      application_name: MySite
+      oauth2_client_id: 
+      oauth2_client_secret: 
+      oauth2_redirect_uri: 
+      developer_key: 
+      site_name: mysite.com
 ```
 
 
