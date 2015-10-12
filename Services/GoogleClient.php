@@ -2,6 +2,8 @@
 
 namespace HappyR\Google\ApiBundle\Services;
 
+use Psr\Log\LoggerInterface;
+
 /**
  * Class GoogleClient
  *
@@ -17,13 +19,15 @@ class GoogleClient
     /**
      * @param array $config
      */
-    public function __construct(array $config)
+    public function __construct(array $config, LoggerInterface $symfonyLogger)
     {
         // True if objects should be returned by the service classes.
         // False if associative arrays should be returned (default behavior).
         $config['use_objects'] = true;
 
         $client = new \Google_Client($config);
+        $googleLogger = new \Google_Logger_Psr($client, $symfonyLogger);
+        $client->setLogger($googleLogger);
 
         $client -> setApplicationName($config['application_name']);
         $client -> setClientId($config['oauth2_client_id']);
