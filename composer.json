@@ -13,17 +13,16 @@
     ],
     "require": {
         "php": ">=5.3.2",
-        "symfony/framework-bundle": "2.*",
-        "symfony/yaml": "2.*",
+        "symfony/framework-bundle": "2.*|~3.0",
+        "symfony/yaml": "2.*|~3.0",
         "google/apiclient": "1.*"
     },
     "require-dev": {
         "mockery/mockery": "*"
     },
     "autoload": {
-        "psr-0": { "HappyR\\Google\\ApiBundle": "" }
+        "psr-4": { "HappyR\\Google\\ApiBundle\\": "" }
     },
-    "target-dir": "HappyR/Google/ApiBundle",
     "extra": {
         "branch-alias": {
             "dev-master": "2.2.x-dev"
