@@ -27,7 +27,13 @@ class GoogleClient
 
         $client = new \Google_Client($config);
         if ($symfonyLogger) {
-            $client->setLogger($symfonyLogger);
+            //BC for Google API 1.0
+            if (class_exists('\Google_Logger_Psr')) {
+                $googleLogger = new \Google_Logger_Psr($client, $symfonyLogger);
+                $client->setLogger($googleLogger);
+            } else {
+                $client->setLogger($symfonyLogger);
+            }
         }
 
         $client -> setApplicationName($config['application_name']);
