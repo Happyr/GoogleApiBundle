@@ -49,7 +49,13 @@ class GoogleClient
             case 'service':
                 $client->setAccessType('offline');
 
-                if (class_exists('\Google_Auth_AssertionCredentials')) {
+                if (isset($config['getenv']) && true === $config['getenv']) {
+                    $client->useApplicationDefaultCredentials();
+
+                } else if (isset($config['json_file'])) {
+                    $client->setAuthConfigFile($config['json_file']);
+
+                } else if (class_exists('\Google_Auth_AssertionCredentials')) {
                     //BC for Google API 1.0
                     $client->setAssertionCredentials(
                         new \Google_Auth_AssertionCredentials(

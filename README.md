@@ -52,14 +52,52 @@ $bundles = array(
 # app/config/config.yml
 # you will get these parameters form https://code.google.com/apis/console/"
 happy_r_google_api:
+  application_name: MySite
+  oauth2_client_id: 
+  oauth2_client_secret: 
+  oauth2_redirect_uri: 
+  developer_key: 
+  site_name: mysite.com
+```
+
+#### Advanced configuration
+
+You can set up multiple accounts, including service accounts.
+
+``` yaml
+# app/config/config.yml
+happy_r_google_api:
   accounts:
+  
+    # regular web authentication
     default:
+      type: web
       application_name: MySite
       oauth2_client_id: 
       oauth2_client_secret: 
       oauth2_redirect_uri: 
       developer_key: 
       site_name: mysite.com
+      
+    # Credentials from GOOGLE_APPLICATION_CREDENTIALS environment variable (recommended)
+    service_env:
+      type: service
+      getenv: true
+
+    # Credentials from service-account.json
+    service_file:
+      type: service
+      json_file: /path/to/your/service-account.json
+
+    # with service credentials, example to access Google Analytics
+    service_account:
+      type: service
+      application_name: MySite
+      oauth2_client_id: 
+      oauth2_client_email: 
+      oauth2_private_key: 
+      oauth2_scopes: 
+        - https://www.googleapis.com/auth/analytics.readonly
 ```
 
 
