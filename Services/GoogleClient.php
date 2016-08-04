@@ -48,13 +48,27 @@ class GoogleClient
 
             case 'service':
                 $client->setAccessType('offline');
-                $client->setAssertionCredentials(
-                    new \Google_Auth_AssertionCredentials(
-                        $config['oauth2_client_email'],
-                        $config['oauth2_scopes'],
-                        $config['oauth2_private_key']
-                    )
-                );
+
+                if (class_exists('\Google_Auth_AssertionCredentials')) {
+                    //BC for Google API 1.0
+                    $client->setAssertionCredentials(
+                        new \Google_Auth_AssertionCredentials(
+                            $config['oauth2_client_email'],
+                            $config['oauth2_scopes'],
+                            $config['oauth2_private_key']
+                        )
+                    );
+                } else {
+                    $client->setScopes($config['oauth2_scopes']);
+                    $client->setAuthConfig(
+                        array(
+                            'type'         => 'service_account',
+                            'client_id'    => $config['oauth2_client_id'],
+                            'client_email' => $config['oauth2_client_email'],
+                            'private_key'  => $config['oauth2_private_key'],
+                        )
+                    );
+                }
                 break;
         }
 
