@@ -180,7 +180,7 @@ class Configuration implements ConfigurationInterface
                                             break;
 
                                         case 'service':
-                                            if ((isset($v['getenv']) && true === $v['getenv']) || $v['json_file']) {
+                                            if ((isset($v['getenv']) && true === $v['getenv']) || isset($v['json_file'])) {
                                                 return $v;
                                             }
 
