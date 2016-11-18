@@ -53,12 +53,113 @@ $bundles = array(
 # you will get these parameters form https://code.google.com/apis/console/"
 happy_r_google_api:
   application_name: MySite
-  oauth2_client_id: 
-  oauth2_client_secret: 
-  oauth2_redirect_uri: 
-  developer_key: 
+  oauth2_client_id:
+  oauth2_client_secret:
+  oauth2_redirect_uri:
+  developer_key:
   site_name: mysite.com
 ```
 
 
 [1]: https://github.com/google/google-api-php-client
+
+Basic Usage
+------------
+
+### Step 1: Create a controller
+Create a controller with `authenticate` and `redirect` methods.
+
+```php
+<?php
+
+namespace AppBundle\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
+
+class GoogleOAuthController extends Controller
+{
+  /**
+   * @Route("/oauth/google/auth")
+   */
+  public function getAuthenticationCodeAction()
+  {
+  }
+
+  /**
+   * @Route("/oauth/google/redirect")
+   */
+  public function getAccessCodeRedirectAction(Request $request)
+  {
+  }
+}
+```
+
+### Step 2: Get the access code
+
+Setup the required scope of your app and redirect the user to complete their part of the OAuth request.
+
+```php
+// ...
+
+  private $accessScope = [
+    \Google_Service_Calendar::CALENDAR
+  ];
+
+  /**
+   * @Route("/oauth/google/auth")
+   */
+  public function getAuthenticationCodeAction()
+  {
+    $client = $this->container->get('happyr.google.api.client');
+
+    // Determine the level of access your application needs
+    $client->getGoogleClient()->setScopes($this->accessScope);
+
+    // Send the user to complete their part of the OAuth
+    return $this->redirect($client->createAuthUrl());
+  }
+
+ // ...
+ ```
+
+### Step 3: Handle the redirect
+
+Determine if an access code has been returned. If there is an access code then exchange this for an access token by using the client `authenticate` method.
+
+```php
+// ...
+
+  private $accessScope = [
+    \Google_Service_Calendar::CALENDAR
+  ];
+
+// ...
+
+  /**
+   * @Route("/oauth/google/redirect")
+   */
+  public function getAccessCodeRedirectAction(Request $request)
+  {
+    if($request->query->get('code'))
+    {
+      $code = $request->query->get('code');
+
+      $client = $this->container->get('happyr.google.api.client');
+      $client->getGoogleClient()->setScopes($this->accessScope);
+      $client->authenticate($code);
+
+      $accessToken = $client->getGoogleClient()->getAccessToken();
+
+      // TODO - Store the token, etc...
+    } else {
+      $error = $request->query->get('error');
+      // TODO - Handle the error
+    }
+  }
+
+// ...
+```
+
+If successful the response should include `access_token`, `expires_in`, `token_type`, and `created`.
