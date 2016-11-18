@@ -53,10 +53,10 @@ $bundles = array(
 # you will get these parameters form https://code.google.com/apis/console/"
 happy_r_google_api:
   application_name: MySite
-  oauth2_client_id: 
-  oauth2_client_secret: 
-  oauth2_redirect_uri: 
-  developer_key: 
+  oauth2_client_id:
+  oauth2_client_secret:
+  oauth2_redirect_uri:
+  developer_key:
   site_name: mysite.com
 ```
 
@@ -69,7 +69,7 @@ Basic Usage
 ### Step 1: Create a controller
 Create a controller with `authenticate` and `redirect` methods.
 
-```
+```php
 <?php
 
 namespace AppBundle\Controller;
@@ -100,42 +100,42 @@ class GoogleOAuthController extends Controller
 
 Setup the required scope of your app and redirect the user to complete their part of the OAuth request.
 
-```
-...
+```php
+// ...
 
   private $accessScope = [
     \Google_Service_Calendar::CALENDAR
   ];
-  
+
   /**
    * @Route("/oauth/google/auth")
    */
   public function getAuthenticationCodeAction()
   {
     $client = $this->container->get('happyr.google.api.client');
-    
+
     // Determine the level of access your application needs
     $client->getGoogleClient()->setScopes($this->accessScope);
-    
+
     // Send the user to complete their part of the OAuth
     return $this->redirect($client->createAuthUrl());
   }
-  
- ...
+
+ // ...
  ```
 
 ### Step 3: Handle the redirect
 
-Determine if an access code has been returned. If there is an access code then exchange this for an access token by using the client `authenticate` method. 
+Determine if an access code has been returned. If there is an access code then exchange this for an access token by using the client `authenticate` method.
 
-```
-...
+```php
+// ...
 
   private $accessScope = [
     \Google_Service_Calendar::CALENDAR
   ];
 
-...
+// ...
 
   /**
    * @Route("/oauth/google/redirect")
@@ -153,15 +153,13 @@ Determine if an access code has been returned. If there is an access code then e
       $accessToken = $client->getGoogleClient()->getAccessToken();
 
       // TODO - Store the token, etc...
-    }
-    else
-    {
+    } else {
       $error = $request->query->get('error');
       // TODO - Handle the error
     }
   }
 
-...
+// ...
 ```
 
 If successful the response should include `access_token`, `expires_in`, `token_type`, and `created`.
