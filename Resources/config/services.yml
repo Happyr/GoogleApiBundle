@@ -16,3 +16,7 @@ services:
     happyr.google.api.groups_migration:
         class: HappyR\Google\ApiBundle\Services\GroupsMigrationService
         arguments: ["@happyr.google.api.client"]
+
+    happyr.google.api.calendar:
+        class: HappyR\Google\ApiBundle\Services\CalendarService
+        arguments: ["@happyr.google.api.client"]
