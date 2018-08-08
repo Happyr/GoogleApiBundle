@@ -20,29 +20,13 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('happy_r_google_api');
 
-        $rootNode
-          ->children()
-            ->scalarNode('application_name')->isRequired()->cannotBeEmpty()->end()
-            ->scalarNode('oauth2_client_id')->isRequired()->cannotBeEmpty()->end()
-            ->scalarNode('oauth2_client_secret')->isRequired()->cannotBeEmpty()->end()
-            ->scalarNode('oauth2_redirect_uri')->isRequired()->cannotBeEmpty()->end()
-            ->scalarNode('developer_key')->isRequired()->cannotBeEmpty()->end()
-            ->scalarNode('site_name')->isRequired()->cannotBeEmpty()->end()
-
-            ->scalarNode('authClass')->end()
-            ->scalarNode('ioClass')->end()
-            ->scalarNode('cacheClass')->end()
-            ->scalarNode('basePath')->end()
-            ->scalarNode('ioFileCache_directory')->end()
-          //end rootnode children
-          ->end();
+        $this->configureAccountNode($rootNode);
 
         //let use the api defaults
         //$this->addServicesSection($rootNode);
 
         return $treeBuilder;
     }
-
 
     /**
      * Add the service section
@@ -142,6 +126,102 @@ class Configuration implements ConfigurationInterface
             //end services
             ->end()->end()
 
+        ;
+    }
+
+    /**
+     * Add properties and validation for account configuration.
+     *
+     * @param ArrayNodeDefinition $node
+     */
+    private function configureAccountNode(ArrayNodeDefinition $node)
+    {
+        $node
+            ->beforeNormalization()
+                ->ifTrue(function ($v) { return is_array($v) && !array_key_exists('accounts', $v) && !array_key_exists('account', $v); })
+                ->then(function ($v) {
+                    // Key that should not be rewritten to the account config
+                    $excludedKeys = array('default_account' => true);
+                    $account = array();
+
+                    foreach ($v as $key => $value) {
+                        if (isset($excludedKeys[$key])) {
+                            continue;
+                        }
+
+                        $account[$key] = $v[$key];
+                        unset($v[$key]);
+                    }
+
+                    $v['default_account'] = isset($v['default_account']) ? (string) $v['default_account'] : 'default';
+                    $v['accounts'] = array($v['default_account'] => $account);
+
+                    return $v;
+                })
+            ->end()
+            ->children()
+                ->scalarNode('default_account')->cannotBeEmpty()->defaultValue('default')->end()
+            ->end()
+            ->fixXmlConfig('account')
+            ->children()
+                ->arrayNode('accounts')
+                    ->isRequired()
+                    ->requiresAtLeastOneElement()
+                    ->useAttributeAsKey('name')
+                    ->prototype('array')
+                        ->validate()
+                            ->always(
+                                function ($v) {
+                                    $required = array();
+
+                                    switch ($v['type']) {
+                                        case 'web':
+                                            $required = array('oauth2_client_secret', 'oauth2_redirect_uri', 'developer_key', 'site_name');
+                                            break;
+
+                                        case 'service':
+                                            if ((isset($v['getenv']) && true === $v['getenv']) || isset($v['json_file']) || isset($v['access_token'])) {
+                                                return $v;
+                                            }
+
+                                            $required = array('oauth2_client_email', 'oauth2_private_key', 'oauth2_scopes');
+                                            break;
+                                    }
+
+                                    foreach ($required as $key) {
+                                        if (!isset($v[$key]) || empty($v[$key])) {
+                                            throw new \InvalidArgumentException(sprintf('"%s" is not set or empty', $key));
+                                        }
+                                    }
+
+                                    return $v;
+                                }
+                            )
+                        ->end()
+                        ->children()
+                            ->enumNode('type')->values(array('web', 'service'))->cannotBeEmpty()->defaultValue('web')->end()
+                            ->scalarNode('application_name')->isRequired()->cannotBeEmpty()->end()
+                            ->scalarNode('oauth2_client_id')->isRequired()->cannotBeEmpty()->end()
+                            ->scalarNode('oauth2_client_secret')->end()
+                            ->scalarNode('oauth2_client_email')->end()
+                            ->variableNode('access_token')->end()
+                            ->scalarNode('oauth2_private_key')->end()
+                            ->scalarNode('oauth2_redirect_uri')->end()
+                            ->variableNode('oauth2_scopes')->end()
+                            ->scalarNode('developer_key')->end()
+                            ->scalarNode('site_name')->end()
+                            ->scalarNode('getenv')->end()
+                            ->scalarNode('json_file')->end()
+
+                            ->scalarNode('authClass')->end()
+                            ->scalarNode('ioClass')->end()
+                            ->scalarNode('cacheClass')->end()
+                            ->scalarNode('basePath')->end()
+                            ->scalarNode('ioFileCache_directory')->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
         ;
     }
 }

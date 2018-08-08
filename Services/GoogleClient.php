@@ -36,13 +36,57 @@ class GoogleClient
             }
         }
 
-        $client -> setApplicationName($config['application_name']);
-        $client -> setClientId($config['oauth2_client_id']);
-        $client -> setClientSecret($config['oauth2_client_secret']);
-        $client -> setRedirectUri($config['oauth2_redirect_uri']);
-        $client -> setDeveloperKey($config['developer_key']);
+        $client->setApplicationName($config['application_name']);
+        $client->setClientId($config['oauth2_client_id']);
 
-        $this -> client = $client;
+        switch ($config['type']) {
+            case 'web':
+                $client->setClientSecret($config['oauth2_client_secret']);
+                $client->setRedirectUri($config['oauth2_redirect_uri']);
+                $client->setDeveloperKey($config['developer_key']);
+                break;
+
+            case 'service':
+                $client->setAccessType('offline');
+                $client->setClientSecret($config['oauth2_client_secret']);
+                $client->setRedirectUri($config['oauth2_redirect_uri']);
+
+                if (isset($config['oauth2_scopes'])) {
+                    $client->setScopes($config['oauth2_scopes']);
+                }
+
+                if (isset($config['getenv']) && true === $config['getenv']) {
+                    $client->useApplicationDefaultCredentials();
+
+                } else if (isset($config['json_file'])) {
+                    $client->setAuthConfigFile($config['json_file']);
+
+                } else if (isset($config['access_token'])) {
+                    $client->setAccessToken($config['access_token']);
+
+                } else if (class_exists('\Google_Auth_AssertionCredentials')) {
+                    //BC for Google API 1.0
+                    $client->setAssertionCredentials(
+                        new \Google_Auth_AssertionCredentials(
+                            $config['oauth2_client_email'],
+                            $config['oauth2_scopes'],
+                            $config['oauth2_private_key']
+                        )
+                    );
+                } else {
+                    $client->setAuthConfig(
+                        array(
+                            'type'         => 'service_account',
+                            'client_id'    => $config['oauth2_client_id'],
+                            'client_email' => $config['oauth2_client_email'],
+                            'private_key'  => $config['oauth2_private_key'],
+                        )
+                    );
+                }
+                break;
+        }
+
+        $this->client = $client;
     }
 
     /**
