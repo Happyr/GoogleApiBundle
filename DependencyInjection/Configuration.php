@@ -180,7 +180,7 @@ class Configuration implements ConfigurationInterface
                                             break;
 
                                         case 'service':
-                                            if ((isset($v['getenv']) && true === $v['getenv']) || isset($v['json_file'])) {
+                                            if ((isset($v['getenv']) && true === $v['getenv']) || isset($v['json_file']) || isset($v['access_token'])) {
                                                 return $v;
                                             }
 
@@ -204,6 +204,7 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('oauth2_client_id')->isRequired()->cannotBeEmpty()->end()
                             ->scalarNode('oauth2_client_secret')->end()
                             ->scalarNode('oauth2_client_email')->end()
+                            ->variableNode('access_token')->end()
                             ->scalarNode('oauth2_private_key')->end()
                             ->scalarNode('oauth2_redirect_uri')->end()
                             ->variableNode('oauth2_scopes')->end()

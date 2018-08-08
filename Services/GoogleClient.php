@@ -48,12 +48,21 @@ class GoogleClient
 
             case 'service':
                 $client->setAccessType('offline');
+                $client->setClientSecret($config['oauth2_client_secret']);
+                $client->setRedirectUri($config['oauth2_redirect_uri']);
+
+                if (isset($config['oauth2_scopes'])) {
+                    $client->setScopes($config['oauth2_scopes']);
+                }
 
                 if (isset($config['getenv']) && true === $config['getenv']) {
                     $client->useApplicationDefaultCredentials();
 
                 } else if (isset($config['json_file'])) {
                     $client->setAuthConfigFile($config['json_file']);
+
+                } else if (isset($config['access_token'])) {
+                    $client->setAccessToken($config['access_token']);
 
                 } else if (class_exists('\Google_Auth_AssertionCredentials')) {
                     //BC for Google API 1.0
@@ -65,7 +74,6 @@ class GoogleClient
                         )
                     );
                 } else {
-                    $client->setScopes($config['oauth2_scopes']);
                     $client->setAuthConfig(
                         array(
                             'type'         => 'service_account',
