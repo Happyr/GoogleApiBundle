@@ -20,3 +20,7 @@ services:
     happyr.google.api.slides:
         class: HappyR\Google\ApiBundle\Services\SlidesService
         arguments: ["@happyr.google.api.client"]
+        
+    happyr.google.api.drive:
+        class: HappyR\Google\ApiBundle\Services\DriveService
+        arguments: ["@happyr.google.api.client"]
