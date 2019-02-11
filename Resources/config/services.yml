@@ -24,3 +24,7 @@ services:
     happyr.google.api.drive:
         class: HappyR\Google\ApiBundle\Services\DriveService
         arguments: ["@happyr.google.api.client"]
+
+    happyr.google.api.sheets:
+        class: HappyR\Google\ApiBundle\Services\GoogleSheetsService
+        arguments: ["@happyr.google.api.client"]
