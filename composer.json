@@ -12,13 +12,14 @@
         }
     ],
     "require": {
-        "php": ">=5.3.2",
+        "php": "^5.6 || ^7.0",
         "symfony/framework-bundle": "2.*|~3.0|^4.0",
         "symfony/yaml": "2.*|~3.0|^4.0",
-        "google/apiclient": "1.*|2.*"
+        "google/apiclient": "1.*|2.*",
+        "reverse/g-sheets": "0.0.1-alpha"
     },
     "require-dev": {
-        "mockery/mockery": "*"
+        "phpunit/phpunit": "^4.0"
     },
     "autoload": {
         "psr-4": { "HappyR\\Google\\ApiBundle\\": "" }
