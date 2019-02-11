@@ -42,6 +42,10 @@ class GoogleClient
         $client -> setRedirectUri($config['oauth2_redirect_uri']);
         $client -> setDeveloperKey($config['developer_key']);
 
+        if (! empty($config['auth_config_file_path'])) {
+            $client->setAuthConfig($config['auth_config_file_path']);
+        }
+
         $this -> client = $client;
     }
 
