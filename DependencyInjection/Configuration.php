@@ -34,6 +34,7 @@ class Configuration implements ConfigurationInterface
             ->scalarNode('cacheClass')->end()
             ->scalarNode('basePath')->end()
             ->scalarNode('ioFileCache_directory')->end()
+            ->scalarNode('auth_config_file_path')->defaultNull()->end()
           //end rootnode children
           ->end();
 
