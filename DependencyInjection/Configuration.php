@@ -20,29 +20,13 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('happy_r_google_api');
 
-        $rootNode
-          ->children()
-            ->scalarNode('application_name')->isRequired()->cannotBeEmpty()->end()
-            ->scalarNode('oauth2_client_id')->isRequired()->cannotBeEmpty()->end()
-            ->scalarNode('oauth2_client_secret')->isRequired()->cannotBeEmpty()->end()
-            ->scalarNode('oauth2_redirect_uri')->isRequired()->cannotBeEmpty()->end()
-            ->scalarNode('developer_key')->isRequired()->cannotBeEmpty()->end()
-            ->scalarNode('site_name')->isRequired()->cannotBeEmpty()->end()
-
-            ->scalarNode('authClass')->end()
-            ->scalarNode('ioClass')->end()
-            ->scalarNode('cacheClass')->end()
-            ->scalarNode('basePath')->end()
-            ->scalarNode('ioFileCache_directory')->end()
-          //end rootnode children
-          ->end();
+        $this->configureAccountNode($rootNode);
 
         //let use the api defaults
         //$this->addServicesSection($rootNode);
 
         return $treeBuilder;
     }
-
 
     /**
      * Add the service section
@@ -142,6 +126,68 @@ class Configuration implements ConfigurationInterface
             //end services
             ->end()->end()
 
+        ;
+    }
+
+    /**
+     * Add properties and validation for account configuration.
+     *
+     * @param ArrayNodeDefinition $node
+     */
+    private function configureAccountNode(ArrayNodeDefinition $node)
+    {
+        $node
+            ->beforeNormalization()
+                ->ifTrue(function ($config) {
+                    return is_array($config) && !array_key_exists('accounts', $config) && !array_key_exists('account', $config);
+                })
+                ->then(function ($config) {
+                    // Key that should not be rewritten to the accounts config
+                    $excludedKeys = array('default_account' => true);
+                    $accounts = array();
+
+                    foreach ($config as $key => $value) {
+                        if (isset($excludedKeys[$key])) {
+                            continue;
+                        }
+
+                        $accounts[$key] = $config[$key];
+                        unset($config[$key]);
+                    }
+
+                    $config['default_account'] = isset($config['default_account']) ? (string) $config['default_account'] : 'default';
+                    $config['accounts'] = array($config['default_account'] => $accounts);
+
+                    return $config;
+                })
+            ->end()
+            ->children()
+                ->scalarNode('default_account')->end()
+            ->end()
+            ->fixXmlConfig('account')
+            ->children()
+                ->arrayNode('accounts')
+                    ->isRequired()
+                    ->requiresAtLeastOneElement()
+                    ->useAttributeAsKey('name')
+                    ->prototype('array')
+                        ->children()
+                            ->scalarNode('application_name')->isRequired()->cannotBeEmpty()->end()
+                            ->scalarNode('oauth2_client_id')->isRequired()->cannotBeEmpty()->end()
+                            ->scalarNode('oauth2_client_secret')->isRequired()->cannotBeEmpty()->end()
+                            ->scalarNode('oauth2_redirect_uri')->isRequired()->cannotBeEmpty()->end()
+                            ->scalarNode('developer_key')->isRequired()->cannotBeEmpty()->end()
+                            ->scalarNode('site_name')->isRequired()->cannotBeEmpty()->end()
+
+                            ->scalarNode('authClass')->end()
+                            ->scalarNode('ioClass')->end()
+                            ->scalarNode('cacheClass')->end()
+                            ->scalarNode('basePath')->end()
+                            ->scalarNode('ioFileCache_directory')->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
         ;
     }
 }
